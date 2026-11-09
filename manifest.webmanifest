@@ -1,16 +1,1 @@
-{
-  "id": "./",
-  "name": "LT Creator Studio",
-  "short_name": "LT Creator",
-  "description": "Seu estúdio pessoal de criação de conteúdo.",
-  "start_url": "./",
-  "scope": "./",
-  "display": "standalone",
-  "orientation": "portrait",
-  "background_color": "#f7f4f1",
-  "theme_color": "#211e1c",
-  "icons": [
-    {"src":"icon-192.png","sizes":"192x192","type":"image/png","purpose":"any"},
-    {"src":"icon-512.png","sizes":"512x512","type":"image/png","purpose":"any"}
-  ]
-}
+{"name":"LT Creator Studio","short_name":"LT Creator","id":"./","start_url":"./","scope":"./","display":"standalone","orientation":"portrait","background_color":"#f7f4f1","theme_color":"#211e1c","icons":[{"src":"icon-192.png","sizes":"192x192","type":"image/png"},{"src":"icon-512.png","sizes":"512x512","type":"image/png"}]}
