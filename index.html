@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#211e1c">
+<title>LT Creator Studio</title>
+<style>
+:root{--ink:#211e1c;--rose:#d9c5c1;--paper:#f4eee8;--muted:#8c817b;--line:#e6ded8}
+*{box-sizing:border-box}body{margin:0;background:#f7f4f1;color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif}
+header{background:var(--ink);color:#fff;padding:20px 18px 16px;position:sticky;top:0;z-index:3}
+.brand{font:italic 26px Georgia,serif}.sub{font-size:10px;letter-spacing:2px;color:#d9c5c1;margin-bottom:5px}
+main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}
+nav{display:flex;gap:7px;overflow:auto;margin-top:14px}nav button,.chip{border:1px solid #514945;background:transparent;color:#fff;border-radius:30px;padding:8px 13px;white-space:nowrap;font-size:12px}
+nav button.active{background:var(--rose);color:#292321;border-color:var(--rose)}
+.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px;box-shadow:0 3px 14px #38291b08}
+h2{font-size:16px;margin:0 0 12px}.muted{color:var(--muted);font-size:12px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:14px;align-items:start}
+.preview-wrap{background:#eee8e3;border-radius:14px;padding:10px;display:flex;justify-content:center}
+canvas{width:min(100%,330px);height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:8px;background:linear-gradient(140deg,#d9c5c1,#f4eee8,#9d817a);touch-action:pan-y}
+label{display:block;font-size:12px;color:#766b65;margin:11px 0 5px}
+input[type=text],select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#211e1c;font:inherit;font-size:14px}
+input[type=range]{width:100%;accent-color:#9b7e76}input[type=color]{width:42px;height:35px;border:0;background:none;padding:0}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1;min-width:0}
+button,.upload{font:inherit;cursor:pointer}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-size:13px;color:#302925}
+.btn.dark{background:#272321;color:white;border-color:#272321}.btn.rose{background:var(--rose);border-color:var(--rose);color:#332a27}
+.templates{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.tpl{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#faf8f6;text-align:left;padding:0;color:#292321}
+.tpl .sample{aspect-ratio:9/13;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-family:Georgia,serif;font-size:14px}
+.tpl span{display:block;padding:8px;font-size:11px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.colorrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.swatch{width:26px;height:26px;border-radius:50%;border:1px solid #ccc}
+.hidden{display:none!important}
+.phrases{display:grid;grid-template-columns:1fr 1fr;gap:8px}.phrase{padding:11px;border:1px solid var(--line);border-radius:11px;text-align:left;background:#fff;font:13px Georgia,serif}
+footer{text-align:center;color:#988d86;font-size:10px;letter-spacing:2px;padding:15px}
+@media(max-width:680px){.workspace{grid-template-columns:1fr}.preview-wrap canvas{width:min(100%,310px)}main{padding:10px}.templates{grid-template-columns:repeat(3,1fr)}}
+</style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#211e1c">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="LT Creator">
+<link rel="apple-touch-icon" href="icon-192.png">
+
+</head>
+<body>
+<header><div class="sub">SEU ESTÚDIO CRIATIVO</div><div class="brand">LT Creator Studio</div><nav id="tabs"><button class="active" data-page="editor">Editor</button><button data-page="templates">Modelos</button><button data-page="phrases">Frases</button></nav></header>
+<main>
+<section id="editor" class="workspace">
+<div class="card"><h2>Prévia da criação</h2><div class="preview-wrap"><canvas id="art" width="900" height="1600"></canvas></div><div class="row" style="margin-top:10px"><label class="btn" style="text-align:center;margin:0">Adicionar foto<input id="photo" type="file" accept="image/*" hidden></label><button class="btn" id="reset">Limpar foto</button></div><button class="btn dark" id="export" style="width:100%;margin-top:9px">↓ Exportar imagem PNG</button><p class="muted" id="status">Escolha um modelo ou adicione uma foto.</p></div>
+<div class="card"><h2>Ferramentas de texto</h2>
+<label>Seu texto</label><input id="txt" type="text" value="Que a vida me surpreenda.">
+<div class="row"><div><label>Fonte</label><select id="font"><option value="Georgia">Editorial serifada</option><option value="cursive">Manuscrita</option><option value="Arial">Moderna</option><option value="Impact">Marcante</option><option value="Times New Roman">Clássica</option><option value="Trebuchet MS">Clean</option></select></div><div><label>Formato</label><select id="shape"><option value="normal">Normal</option><option value="curve">Curvada</option><option value="circle">Circular</option></select></div></div>
+<label>Tamanho <output id="sizeOut">54</output></label><input id="size" type="range" min="20" max="110" value="54">
+<label>Posição vertical <output id="posOut">50%</output></label><input id="pos" type="range" min="10" max="90" value="50">
+<label>Espaçamento entre letras <output id="spacingOut">1</output></label><input id="spacing" type="range" min="-2" max="12" value="1">
+<label>Transparência <output id="opacityOut">100%</output></label><input id="opacity" type="range" min="10" max="100" value="100">
+<label>Cor e acabamento</label><div class="colorrow"><input id="color" type="color" value="#ffffff"><button class="swatch" data-color="#ffffff" style="background:white"></button><button class="swatch" data-color="#292321" style="background:#292321"></button><button class="swatch" data-color="#d9c5c1" style="background:#d9c5c1"></button><button class="swatch" data-color="#b5a89b" style="background:#b5a89b"></button></div>
+<div class="tools"><label><input type="checkbox" id="shadow" checked> Sombra suave</label><label><input type="checkbox" id="stroke"> Contorno</label><label><input type="checkbox" id="uppercase"> Maiúsculas</label><label><input type="checkbox" id="italic"> Itálico</label></div>
+<label>Cor do contorno</label><input id="strokeColor" type="color" value="#292321">
+</div></section>
+<section id="templates" class="card hidden"><h2>Biblioteca de modelos</h2><p class="muted">Escolha um estilo para começar. Depois personalize tudo no editor.</p><div class="templates" id="templateGrid"></div></section>
+<section id="phrases" class="card hidden"><h2>Frases para suas publicações</h2><div class="row"><select id="category"><option value="all">Todas as categorias</option><option value="autoestima">Autoestima</option><option value="reflexao">Reflexão</option><option value="lifestyle">Lifestyle</option><option value="atitude">Atitude</option></select></div><div class="phrases" id="phraseGrid" style="margin-top:12px"></div><label>Escreva sua própria frase</label><input id="custom" type="text" placeholder="Sua frase..."><button class="btn rose" id="useCustom" style="width:100%;margin-top:8px">Usar no editor</button></section>
+<footer>LT CREATOR STUDIO · CREATE YOUR OWN STORY</footer>
+</main>
+<script>
+(()=>{
+const $=id=>document.getElementById(id),c=$('art'),x=c.getContext('2d');let img=null,bg=['#d9c5c1','#f4eee8','#9d817a'],template=0;
+const models=[
+{name:'Rosé editorial',a:'#d9c5c1',b:'#f4eee8',ink:'#ffffff',phrase:'Florescendo no meu tempo.'},
+{name:'Minimal clean',a:'#eee9e2',b:'#c9bdb2',ink:'#292321',phrase:'A beleza mora nos detalhes.'},
+{name:'Noite elegante',a:'#292321',b:'#61534d',ink:'#ffffff',phrase:'Sem pressa. Sem medo.'},
+{name:'Romântico',a:'#ead8d5',b:'#b78f91',ink:'#ffffff',phrase:'Que seja leve.'},
+{name:'Areia',a:'#c7b8a7',b:'#eee4d8',ink:'#292321',phrase:'A vida acontece agora.'},
+{name:'Bold',a:'#39302e',b:'#a98b80',ink:'#f5eee8',phrase:'MINHA NOVA FASE.'},
+{name:'Soft morning',a:'#f4eee8',b:'#d9c5c1',ink:'#65504a',phrase:'Um dia de cada vez.'},
+{name:'Monocromático',a:'#202020',b:'#77716e',ink:'#ffffff',phrase:'Stay true to yourself.'},
+{name:'Golden hour',a:'#b98e70',b:'#ead3b7',ink:'#fff8ed',phrase:'Colecionando momentos.'}
+];
+function draw(){
+let w=c.width,h=c.height,g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,bg[0]);g.addColorStop(1,bg[1]);x.clearRect(0,0,w,h);x.fillStyle=g;x.fillRect(0,0,w,h);
+if(img){let s=Math.max(w/img.width,h/img.height),sw=w/s,sh=h/s;x.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,w,h)}
+let t=$('txt').value;if($('uppercase').checked)t=t.toUpperCase();let size=+$('size').value*1.5,y=h*+$('pos').value/100,opacity=+$('opacity').value/100;
+x.save();x.globalAlpha=opacity;x.fillStyle=$('color').value;x.textAlign='center';x.textBaseline='middle';x.font=($('italic').checked?'italic ':'')+size+'px "'+$('font').value+'"';x.shadowColor=$('shadow').checked?'#0008':'transparent';x.shadowBlur=$('shadow').checked?13:0;x.shadowOffsetY=$('shadow').checked?4:0;
+let chars=[...t],spacing=+$('spacing').value;
+function drawChar(ch,xx,yy,a=0){x.save();x.translate(xx,yy);x.rotate(a);if($('stroke').checked){x.lineWidth=3;x.strokeStyle=$('strokeColor').value;x.strokeText(ch,0,0)}x.fillText(ch,0,0);x.restore()}
+if($('shape').value!=='normal'){let r=$('shape').value==='circle'?Math.min(270,chars.length*size*.27):Math.min(340,chars.length*size*.34);let step=Math.min(.16,(size+spacing*3)/(r||1));chars.forEach((ch,i)=>{let a=(i-(chars.length-1)/2)*step;drawChar(ch,w/2+r*Math.sin(a),y-r*(1-Math.cos(a)),a)})}
+else{let words=t.split(' '),lines=[],line='';words.forEach(word=>{let z=line?line+' '+word:word;if(x.measureText(z).width>w*.82&&line){lines.push(line);line=word}else line=z});if(line)lines.push(line);lines.forEach((l,i)=>{let chars2=[...l],width=chars2.reduce((sum,ch)=>sum+x.measureText(ch).width,0)+spacing*3*(chars2.length-1),xx=(w-width)/2;chars2.forEach(ch=>{let cw=x.measureText(ch).width;drawChar(ch,xx+cw/2,y+(i-(lines.length-1)/2)*size*1.25);xx+=cw+spacing*3})})}
+x.restore();
+}
+function setModel(i){template=i;let m=models[i];bg=[m.a,m.b];$('color').value=m.ink;$('txt').value=m.phrase;img=null;$('photo').value='';draw();$('status').textContent='Modelo aplicado: '+m.name}
+models.forEach((m,i)=>{let b=document.createElement('button');b.className='tpl';b.innerHTML='<div class="sample" style="background:linear-gradient(145deg,'+m.a+','+m.b+');color:'+m.ink+'">'+m.phrase+'</div><span>'+m.name+'</span>';b.onclick=()=>{setModel(i);show('editor')};$('templateGrid').append(b)});
+const phrases=[['autoestima','Não diminua sua luz para caber em lugar nenhum.'],['autoestima','Minha melhor versão ainda está por vir.'],['autoestima','Seja sua própria prioridade.'],['reflexao','Que a vida me surpreenda.'],['reflexao','Tudo tem seu tempo, inclusive florescer.'],['reflexao','Há beleza em recomeçar.'],['lifestyle','Colecionando momentos, não expectativas.'],['lifestyle','A vida acontece nos detalhes.'],['lifestyle','Leveza também é uma escolha.'],['atitude','Minha paz não está em negociação.'],['atitude','Não nasci para viver pela metade.'],['atitude','Onde existe vontade, existe caminho.']];
+function phrasesRender(){let cat=$('category').value;$('phraseGrid').innerHTML='';phrases.filter(p=>cat==='all'||p[0]===cat).forEach(p=>{let b=document.createElement('button');b.className='phrase';b.textContent=p[1];b.onclick=()=>{$('txt').value=p[1];show('editor');draw()};$('phraseGrid').append(b)})}
+function show(page){['editor','templates','phrases'].forEach(id=>$(id).classList.toggle('hidden',id!==page));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.page));
+['txt','font','shape','size','pos','spacing','opacity','color','shadow','stroke','strokeColor','uppercase','italic'].forEach(id=>$(id).addEventListener('input',()=>{if(id==='size')$('sizeOut').textContent=$('size').value;if(id==='pos')$('posOut').textContent=$('pos').value+'%';if(id==='spacing')$('spacingOut').textContent=$('spacing').value;if(id==='opacity')$('opacityOut').textContent=$('opacity').value+'%';draw()}));
+document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('color').value=b.dataset.color;draw()});
+$('photo').onchange=e=>{let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f),im=new Image();im.onload=()=>{img=im;draw();$('status').textContent='Foto carregada. Personalize seu texto!';URL.revokeObjectURL(u)};im.src=u};
+$('reset').onclick=()=>{img=null;$('photo').value='';draw();$('status').textContent='Foto removida.'};
+$('export').onclick=()=>{draw();c.toBlob(blob=>{if(!blob)return;let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='LT-Creator-Studio.png';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500);$('status').textContent='Imagem exportada em PNG.'},'image/png')};
+$('category').onchange=phrasesRender;$('useCustom').onclick=()=>{if($('custom').value.trim()){$('txt').value=$('custom').value;show('editor');draw()}};phrasesRender();setModel(0);
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(()=>{}));
+}
+</script>
+</body></html>
