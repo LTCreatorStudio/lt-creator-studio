@@ -1,122 +1,97 @@
 <!doctype html>
 <html lang="pt-BR">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#171717">
-<meta name="description" content="Studio 3.0 Natural Real — edição fotográfica natural e simples.">
-<link rel="manifest" href="manifest.webmanifest">
-<title>Studio 3.0 · Natural Real</title>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#211e1c">
+<title>LT Creator Studio</title>
 <style>
-:root{--bg:#f4f4f2;--panel:#fff;--ink:#171717;--muted:#777;--line:#e5e5e2;--accent:#b9aaa0}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-header{background:#171717;color:#fff;padding:22px 18px 18px;text-align:center}
-.kicker{font-size:10px;letter-spacing:3px;color:#c7bdb6}.brand{font:italic 27px Georgia,serif;margin-top:5px}.tag{font-size:11px;color:#c7c7c7;margin-top:5px}
-main{max-width:1040px;margin:auto;padding:16px;display:grid;grid-template-columns:minmax(0,1.15fr) minmax(280px,.85fr);gap:16px}
-.panel{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:0 5px 20px #00000006}
-h2{font-size:15px;margin:0 0 13px}.preview{min-height:300px;background:#e9e9e6;border-radius:13px;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative}
-canvas{display:block;max-width:100%;max-height:68vh;object-fit:contain}
-.empty{padding:30px;text-align:center;color:#666;font-size:13px;line-height:1.6}
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-button,.upload{border:1px solid var(--line);border-radius:11px;padding:11px 14px;background:#fff;color:#171717;font:600 12px inherit;cursor:pointer}
-button.primary{background:#171717;color:white;border-color:#171717}button:disabled{opacity:.4;cursor:not-allowed}
-.upload{display:inline-flex;align-items:center;justify-content:center}
-input[type=file]{display:none}
-.control{margin:13px 0}.control-head{display:flex;justify-content:space-between;align-items:center;font-size:12px;margin-bottom:7px}.control output{color:#777;font-variant-numeric:tabular-nums}
-input[type=range]{width:100%;accent-color:#555}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.presets{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
-.preset{padding:10px 5px;font-size:11px;background:#f8f8f6}
-.note{font-size:11px;color:#777;line-height:1.5;margin:12px 0 0}
-.status{font-size:11px;color:#777;min-height:17px;margin-top:10px}
-footer{text-align:center;padding:5px 16px 24px;color:#888;font-size:10px;letter-spacing:1px}
-@media(max-width:760px){main{grid-template-columns:1fr;padding:11px}.preview{min-height:260px}canvas{max-height:55vh}.panel{padding:13px}}
-</style>
-</head>
+:root{--ink:#211e1c;--rose:#d9c5c1;--paper:#f4eee8;--muted:#8c817b;--line:#e6ded8}
+*{box-sizing:border-box}body{margin:0;background:#f7f4f1;color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif}
+header{background:var(--ink);color:#fff;padding:20px 18px 16px;position:sticky;top:0;z-index:3}
+.brand{font:italic 26px Georgia,serif}.sub{font-size:10px;letter-spacing:2px;color:#d9c5c1;margin-bottom:5px}
+main{max-width:900px;margin:auto;padding:14px;display:grid;gap:14px}
+nav{display:flex;gap:7px;overflow:auto;margin-top:14px}nav button,.chip{border:1px solid #514945;background:transparent;color:#fff;border-radius:30px;padding:8px 13px;white-space:nowrap;font-size:12px}
+nav button.active{background:var(--rose);color:#292321;border-color:var(--rose)}
+.card{background:#fff;border:1px solid var(--line);border-radius:17px;padding:14px;box-shadow:0 3px 14px #38291b08}
+h2{font-size:16px;margin:0 0 12px}.muted{color:var(--muted);font-size:12px}
+.workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:14px;align-items:start}
+.preview-wrap{background:#eee8e3;border-radius:14px;padding:10px;display:flex;justify-content:center}
+canvas{width:min(100%,330px);height:auto;aspect-ratio:9/16;object-fit:contain;border-radius:8px;background:linear-gradient(140deg,#d9c5c1,#f4eee8,#9d817a);touch-action:pan-y}
+label{display:block;font-size:12px;color:#766b65;margin:11px 0 5px}
+input[type=text],select{width:100%;padding:10px;border:1px solid var(--line);border-radius:10px;background:#fff;color:#211e1c;font:inherit;font-size:14px}
+input[type=range]{width:100%;accent-color:#9b7e76}input[type=color]{width:42px;height:35px;border:0;background:none;padding:0}
+.row{display:flex;gap:8px;align-items:center}.row>*{flex:1;min-width:0}
+button,.upload{font:inherit;cursor:pointer}.btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;font-size:13px;color:#302925}
+.btn.dark{background:#272321;color:white;border-color:#272321}.btn.rose{background:var(--rose);border-color:var(--rose);color:#332a27}
+.templates{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.tpl{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#faf8f6;text-align:left;padding:0;color:#292321}
+.tpl .sample{aspect-ratio:9/13;display:flex;align-items:center;justify-content:center;text-align:center;padding:10px;font-family:Georgia,serif;font-size:14px}
+.tpl span{display:block;padding:8px;font-size:11px}
+.tools{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.colorrow{display:flex;align-items:center;gap:9px;flex-wrap:wrap}.swatch{width:26px;height:26px;border-radius:50%;border:1px solid #ccc}
+.hidden{display:none!important}.divider{height:1px;background:#eee8e3;margin:16px 0}
+.phrases{display:grid;grid-template-columns:1fr 1fr;gap:8px}.phrase{padding:11px;border:1px solid var(--line);border-radius:11px;text-align:left;background:#fff;font:13px Georgia,serif}
+footer{text-align:center;color:#988d86;font-size:10px;letter-spacing:2px;padding:15px}
+@media(max-width:680px){.workspace{grid-template-columns:1fr}.preview-wrap canvas{width:min(100%,310px)}main{padding:10px}.templates{grid-template-columns:repeat(3,1fr)}}
+</style></head>
 <body>
-<header><div class="kicker">EDIÇÃO FOTOGRÁFICA</div><div class="brand">Studio 3.0</div><div class="tag">NATURAL REAL · sua foto, só que melhor</div></header>
+<header><div class="sub">SEU ESTÚDIO CRIATIVO</div><div class="brand">LT Creator Studio</div><nav id="tabs"><button class="active" data-page="editor">Fotos</button><button data-page="templates">Inspiração</button><button data-page="videos">Vídeos</button><button data-page="phrases">Frases</button></nav></header>
 <main>
-<section class="panel">
-<h2>Prévia da sua foto</h2>
-<div class="preview" id="preview"><div class="empty" id="empty">Adicione uma foto para começar.<br>Seus ajustes são aplicados no próprio dispositivo.</div><canvas id="canvas" hidden></canvas></div>
-<div class="actions">
-<label class="upload primary" for="file">Adicionar foto</label><input id="file" type="file" accept="image/*">
-<button id="resetPhoto" disabled>Remover foto</button>
-<button id="download" class="primary" disabled>Exportar JPG</button>
-</div>
-<div class="status" id="status" aria-live="polite">Nenhuma foto selecionada.</div>
-<p class="note">Privacidade: a imagem é processada localmente no navegador. O aplicativo não envia sua foto para um servidor.</p>
-</section>
-<section class="panel">
-<h2>Ajustes naturais</h2>
-<div class="control"><div class="control-head"><label for="brightness">Brilho</label><output id="brightnessVal">0</output></div><input id="brightness" type="range" min="-40" max="40" value="0"></div>
-<div class="control"><div class="control-head"><label for="contrast">Contraste</label><output id="contrastVal">0</output></div><input id="contrast" type="range" min="-40" max="40" value="0"></div>
-<div class="control"><div class="control-head"><label for="saturation">Saturação</label><output id="saturationVal">0</output></div><input id="saturation" type="range" min="-50" max="50" value="0"></div>
-<div class="control"><div class="control-head"><label for="temperature">Temperatura</label><output id="temperatureVal">0</output></div><input id="temperature" type="range" min="-30" max="30" value="0"></div>
-<div class="control"><div class="control-head"><label for="blur">Desfoque suave</label><output id="blurVal">0</output></div><input id="blur" type="range" min="0" max="3" step=".1" value="0"></div>
-<div class="control"><div class="control-head"><label for="vignette">Vinheta</label><output id="vignetteVal">0</output></div><input id="vignette" type="range" min="0" max="60" value="0"></div>
-<h2 style="margin-top:20px">Presets discretos</h2>
-<div class="presets">
-<button class="preset" data-preset="clean">Natural</button><button class="preset" data-preset="warm">Quente</button><button class="preset" data-preset="soft">Suave</button>
-</div>
-<div class="actions"><button id="resetAdjust" style="width:100%">Restaurar ajustes</button></div>
-<p class="note">Os presets são leves e podem ser personalizados pelos controles acima. Não há remodelação de rosto, corpo ou cenário.</p>
-</section>
+<section id="editor" class="workspace">
+<div class="card"><h2>Prévia da criação</h2><div class="preview-wrap"><canvas id="art" width="900" height="1600"></canvas></div><div class="row" style="margin-top:10px"><label class="btn" style="text-align:center;margin:0">Adicionar foto<input id="photo" type="file" accept="image/*" hidden></label><button class="btn" id="reset">Limpar foto</button></div><button class="btn dark" id="export" style="width:100%;margin-top:9px">↓ Exportar imagem PNG</button><p class="muted" id="status">Escolha um modelo ou adicione uma foto.</p></div>
+<div class="card"><h2>Ajustes profissionais</h2><label>Estilo</label><select id="photoPreset"><option value="original">Natural original</option><option value="clean">Natural iluminado</option><option value="warm">Quente suave</option><option value="soft">Suave editorial</option></select><div class="row"><div><label>Brilho</label><input id="pBrightness" type="range" min="-30" max="30" value="0"></div><div><label>Contraste</label><input id="pContrast" type="range" min="-25" max="25" value="0"></div></div><div class="row"><div><label>Saturação</label><input id="pSaturation" type="range" min="-35" max="35" value="0"></div><div><label>Temperatura</label><input id="pTemperature" type="range" min="-25" max="25" value="0"></div></div><div class="row"><div><label>Desfoque</label><input id="pBlur" type="range" min="0" max="2" step=".1" value="0"></div><div><label>Vinheta</label><input id="pVignette" type="range" min="0" max="45" value="0"></div></div><button class="btn" id="resetPhotoAdjust">Restaurar ajustes</button><p class="muted">Edição natural, sem remodelar rosto, corpo ou cenário. A foto é processada no seu aparelho.</p><div class="divider"></div><h2>Texto e composição</h2>
+<label>Seu texto</label><input id="txt" type="text" value="Que a vida me surpreenda.">
+<div class="row"><div><label>Fonte</label><select id="font"><option value="Georgia">Editorial serifada</option><option value="cursive">Manuscrita</option><option value="Arial">Moderna</option><option value="Impact">Marcante</option><option value="Times New Roman">Clássica</option><option value="Trebuchet MS">Clean</option></select></div><div><label>Formato</label><select id="shape"><option value="normal">Normal</option><option value="curve">Curvada</option><option value="circle">Circular</option></select></div></div>
+<label>Tamanho <output id="sizeOut">54</output></label><input id="size" type="range" min="20" max="110" value="54">
+<label>Posição vertical <output id="posOut">50%</output></label><input id="pos" type="range" min="10" max="90" value="50">
+<label>Espaçamento entre letras <output id="spacingOut">1</output></label><input id="spacing" type="range" min="-2" max="12" value="1">
+<label>Transparência <output id="opacityOut">100%</output></label><input id="opacity" type="range" min="10" max="100" value="100">
+<label>Cor e acabamento</label><div class="colorrow"><input id="color" type="color" value="#ffffff"><button class="swatch" data-color="#ffffff" style="background:white"></button><button class="swatch" data-color="#292321" style="background:#292321"></button><button class="swatch" data-color="#d9c5c1" style="background:#d9c5c1"></button><button class="swatch" data-color="#b5a89b" style="background:#b5a89b"></button></div>
+<div class="tools"><label><input type="checkbox" id="shadow" checked> Sombra suave</label><label><input type="checkbox" id="stroke"> Contorno</label><label><input type="checkbox" id="uppercase"> Maiúsculas</label><label><input type="checkbox" id="italic"> Itálico</label></div>
+<label>Cor do contorno</label><input id="strokeColor" type="color" value="#292321">
+</div></section>
+<section id="templates" class="card hidden"><h2>Biblioteca de modelos</h2><p class="muted">Escolha um estilo para começar. Depois personalize tudo no editor.</p><div class="templates" id="templateGrid"></div></section>
+<section id="videos" class="card hidden"><h2>Capas para vídeos</h2><p class="muted">Crie uma capa para Reels, Stories ou publicações.</p><label>Formato</label><select id="videoFormat"><option value="9:16">Story / Reels 9:16</option><option value="4:5">Feed 4:5</option><option value="1:1">Quadrado 1:1</option></select><label>Título do vídeo</label><input id="videoTitle" type="text" placeholder="Escreva o título do vídeo"><label>Complemento</label><input id="videoSubtitle" type="text" placeholder="Uma frase curta (opcional)"><button class="btn rose" id="applyVideo" style="width:100%;margin-top:10px">Usar texto na criação</button><p class="muted">O Studio cria a arte da capa para você salvar e usar no seu editor de vídeo.</p></section>
+<section id="phrases" class="card hidden"><h2>Frases para suas publicações</h2><div class="row"><select id="category"><option value="all">Todas as categorias</option><option value="autoestima">Autoestima</option><option value="reflexao">Reflexão</option><option value="lifestyle">Lifestyle</option><option value="atitude">Atitude</option></select></div><div class="phrases" id="phraseGrid" style="margin-top:12px"></div><label>Escreva sua própria frase</label><input id="custom" type="text" placeholder="Sua frase..."><button class="btn rose" id="useCustom" style="width:100%;margin-top:8px">Usar no editor</button></section>
+<footer>LT CREATOR STUDIO · SUA CRIATIVIDADE, SUA IDENTIDADE</footer>
 </main>
-<footer>STUDIO 3.0 NATURAL REAL · EDIÇÃO COM NATURALIDADE</footer>
 <script>
 (()=>{
-const $=id=>document.getElementById(id),canvas=$('canvas'),ctx=canvas.getContext('2d',{willReadFrequently:true});
-let original=null, imageName='foto';
-const ids=['brightness','contrast','saturation','temperature','blur','vignette'];
-const defaults={brightness:0,contrast:0,saturation:0,temperature:0,blur:0,vignette:0};
-function values(){const v={};ids.forEach(id=>v[id]=Number($(id).value));return v}
-function setValues(v){ids.forEach(id=>{$(id).value=v[id];$(id+'Val').textContent=Number(v[id]).toFixed(id==='blur'?1:0)});render()}
-function render(){
- if(!original)return;
- const v=values(),w=original.width,h=original.height;
- canvas.width=w;canvas.height=h;
- ctx.filter=`brightness(${100+v.brightness}%) contrast(${100+v.contrast}%) saturate(${100+v.saturation}%) blur(${v.blur}px)`;
- ctx.drawImage(original,0,0,w,h);ctx.filter='none';
- if(v.temperature!==0){
-  ctx.save();ctx.globalCompositeOperation='soft-light';
-  ctx.fillStyle=v.temperature>0?`rgba(255,${Math.max(120,205-v.temperature)},${Math.max(80,170-v.temperature*2)},${Math.abs(v.temperature)/150})`:`rgba(${Math.max(100,180+v.temperature)},${Math.max(150,210+v.temperature)},255,${Math.abs(v.temperature)/170})`;
-  ctx.fillRect(0,0,w,h);ctx.restore();
- }
- if(v.vignette>0){
-  const g=ctx.createRadialGradient(w/2,h/2,Math.min(w,h)*.18,w/2,h/2,Math.max(w,h)*.72);
-  g.addColorStop(0,'rgba(0,0,0,0)');g.addColorStop(1,`rgba(0,0,0,${v.vignette/150})`);
-  ctx.fillStyle=g;ctx.fillRect(0,0,w,h);
- }
- $('empty').hidden=true;canvas.hidden=false;$('download').disabled=false;$('resetPhoto').disabled=false;
+const $=id=>document.getElementById(id),c=$('art'),x=c.getContext('2d');let img=null,bg=['#d9c5c1','#f4eee8','#9d817a'],template=0; const photoDefaults={pBrightness:0,pContrast:0,pSaturation:0,pTemperature:0,pBlur:0,pVignette:0};
+const models=[
+{name:'Rosé editorial',a:'#d9c5c1',b:'#f4eee8',ink:'#ffffff',phrase:'Florescendo no meu tempo.'},
+{name:'Minimal clean',a:'#eee9e2',b:'#c9bdb2',ink:'#292321',phrase:'A beleza mora nos detalhes.'},
+{name:'Noite elegante',a:'#292321',b:'#61534d',ink:'#ffffff',phrase:'Sem pressa. Sem medo.'},
+{name:'Romântico',a:'#ead8d5',b:'#b78f91',ink:'#ffffff',phrase:'Que seja leve.'},
+{name:'Areia',a:'#c7b8a7',b:'#eee4d8',ink:'#292321',phrase:'A vida acontece agora.'},
+{name:'Bold',a:'#39302e',b:'#a98b80',ink:'#f5eee8',phrase:'MINHA NOVA FASE.'},
+{name:'Soft morning',a:'#f4eee8',b:'#d9c5c1',ink:'#65504a',phrase:'Um dia de cada vez.'},
+{name:'Monocromático',a:'#202020',b:'#77716e',ink:'#ffffff',phrase:'Stay true to yourself.'},
+{name:'Golden hour',a:'#b98e70',b:'#ead3b7',ink:'#fff8ed',phrase:'Colecionando momentos.'}
+];
+function draw(){
+let w=c.width,h=c.height,g=x.createLinearGradient(0,0,w,h);g.addColorStop(0,bg[0]);g.addColorStop(1,bg[1]);x.clearRect(0,0,w,h);x.fillStyle=g;x.fillRect(0,0,w,h);
+if(img){let s=Math.max(w/img.width,h/img.height),sw=w/s,sh=h/s;x.save();x.filter=`brightness(${100+ +$('pBrightness').value}%) contrast(${100+ +$('pContrast').value}%) saturate(${100+ +$('pSaturation').value}%) blur(${$('pBlur').value}px)`;x.drawImage(img,(img.width-sw)/2,(img.height-sh)/2,sw,sh,0,0,w,h);x.restore();let temp=+$('pTemperature').value;if(temp){x.save();x.globalAlpha=Math.abs(temp)/180;x.fillStyle=temp>0?'#ffb36b':'#8bb9e8';x.fillRect(0,0,w,h);x.restore()}let vig=+$('pVignette').value;if(vig){let vg=x.createRadialGradient(w/2,h/2,Math.min(w,h)*.2,w/2,h/2,Math.max(w,h)*.72);vg.addColorStop(0,'#0000');vg.addColorStop(1,`rgba(30,20,18,${vig/100})`);x.fillStyle=vg;x.fillRect(0,0,w,h)}}
+let t=$('txt').value;if($('uppercase').checked)t=t.toUpperCase();let size=+$('size').value*1.5,y=h*+$('pos').value/100,opacity=+$('opacity').value/100;
+x.save();x.globalAlpha=opacity;x.fillStyle=$('color').value;x.textAlign='center';x.textBaseline='middle';x.font=($('italic').checked?'italic ':'')+size+'px "'+$('font').value+'"';x.shadowColor=$('shadow').checked?'#0008':'transparent';x.shadowBlur=$('shadow').checked?13:0;x.shadowOffsetY=$('shadow').checked?4:0;
+let chars=[...t],spacing=+$('spacing').value;
+function drawChar(ch,xx,yy,a=0){x.save();x.translate(xx,yy);x.rotate(a);if($('stroke').checked){x.lineWidth=3;x.strokeStyle=$('strokeColor').value;x.strokeText(ch,0,0)}x.fillText(ch,0,0);x.restore()}
+if($('shape').value!=='normal'){let r=$('shape').value==='circle'?Math.min(270,chars.length*size*.27):Math.min(340,chars.length*size*.34);let step=Math.min(.16,(size+spacing*3)/(r||1));chars.forEach((ch,i)=>{let a=(i-(chars.length-1)/2)*step;drawChar(ch,w/2+r*Math.sin(a),y-r*(1-Math.cos(a)),a)})}
+else{let words=t.split(' '),lines=[],line='';words.forEach(word=>{let z=line?line+' '+word:word;if(x.measureText(z).width>w*.82&&line){lines.push(line);line=word}else line=z});if(line)lines.push(line);lines.forEach((l,i)=>{let chars2=[...l],width=chars2.reduce((sum,ch)=>sum+x.measureText(ch).width,0)+spacing*3*(chars2.length-1),xx=(w-width)/2;chars2.forEach(ch=>{let cw=x.measureText(ch).width;drawChar(ch,xx+cw/2,y+(i-(lines.length-1)/2)*size*1.25);xx+=cw+spacing*3})})}
+x.restore();
 }
-ids.forEach(id=>$(id).addEventListener('input',()=>{$(id+'Val').textContent=Number($(id).value).toFixed(id==='blur'?1:0);render()}));
-$('file').addEventListener('change',e=>{
- const file=e.target.files&&e.target.files[0];if(!file)return;
- if(!file.type.startsWith('image/')){$('status').textContent='Selecione um arquivo de imagem.';return}
- const url=URL.createObjectURL(file),img=new Image();
- img.onload=()=>{original=img;imageName=(file.name||'foto').replace(/\.[^.]+$/,'');setValues(defaults);$('status').textContent='Foto carregada. Ajuste com sutileza.';URL.revokeObjectURL(url)};
- img.onerror=()=>{$('status').textContent='Não foi possível abrir esta imagem.';URL.revokeObjectURL(url)};
- img.src=url;
-});
-$('resetPhoto').onclick=()=>{original=null;$('file').value='';canvas.hidden=true;$('empty').hidden=false;$('download').disabled=true;$('resetPhoto').disabled=true;$('status').textContent='Foto removida.'};
-$('resetAdjust').onclick=()=>setValues(defaults);
-document.querySelectorAll('[data-preset]').forEach(b=>b.onclick=()=>{
- const p=b.dataset.preset;
- const presets={clean:{brightness:3,contrast:4,saturation:3,temperature:0,blur:0,vignette:0},warm:{brightness:3,contrast:2,saturation:4,temperature:9,blur:0,vignette:8},soft:{brightness:5,contrast:-5,saturation:-5,temperature:2,blur:0,vignette:5}};
- setValues(presets[p]);
-});
-$('download').onclick=()=>{
- if(!original)return;
- render();canvas.toBlob(blob=>{
-  if(!blob){$('status').textContent='Falha ao exportar a imagem.';return}
-  const url=URL.createObjectURL(blob),a=document.createElement('a');
-  a.href=url;a.download=`${imageName}-natural-real.jpg`;a.click();
-  setTimeout(()=>URL.revokeObjectURL(url),1500);$('status').textContent='Imagem exportada em JPG.';
- },'image/jpeg',.94);
-};
-if('serviceWorker' in navigator && location.protocol!=='file:'){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}))}
+function setModel(i){template=i;let m=models[i];bg=[m.a,m.b];$('color').value=m.ink;$('txt').value=m.phrase;img=null;$('photo').value='';draw();$('status').textContent='Modelo aplicado: '+m.name}
+models.forEach((m,i)=>{let b=document.createElement('button');b.className='tpl';b.innerHTML='<div class="sample" style="background:linear-gradient(145deg,'+m.a+','+m.b+');color:'+m.ink+'">'+m.phrase+'</div><span>'+m.name+'</span>';b.onclick=()=>{setModel(i);show('editor')};$('templateGrid').append(b)});
+const phrases=[['autoestima','Não diminua sua luz para caber em lugar nenhum.'],['autoestima','Minha melhor versão ainda está por vir.'],['autoestima','Seja sua própria prioridade.'],['reflexao','Que a vida me surpreenda.'],['reflexao','Tudo tem seu tempo, inclusive florescer.'],['reflexao','Há beleza em recomeçar.'],['lifestyle','Colecionando momentos, não expectativas.'],['lifestyle','A vida acontece nos detalhes.'],['lifestyle','Leveza também é uma escolha.'],['atitude','Minha paz não está em negociação.'],['atitude','Não nasci para viver pela metade.'],['atitude','Onde existe vontade, existe caminho.']];
+function phrasesRender(){let cat=$('category').value;$('phraseGrid').innerHTML='';phrases.filter(p=>cat==='all'||p[0]===cat).forEach(p=>{let b=document.createElement('button');b.className='phrase';b.textContent=p[1];b.onclick=()=>{$('txt').value=p[1];show('editor');draw()};$('phraseGrid').append(b)})}
+function show(page){['editor','templates','videos','phrases'].forEach(id=>$(id).classList.toggle('hidden',id!==page));document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.page===page))}
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>show(b.dataset.page));
+['pBrightness','pContrast','pSaturation','pTemperature','pBlur','pVignette'].forEach(id=>$(id).addEventListener('input',draw));$('resetPhotoAdjust').onclick=()=>{Object.entries(photoDefaults).forEach(([id,v])=>$(id).value=v);$('photoPreset').value='original';draw()};$('photoPreset').onchange=e=>{let sets={original:photoDefaults,clean:{pBrightness:7,pContrast:4,pSaturation:3,pTemperature:0,pBlur:0,pVignette:0},warm:{pBrightness:3,pContrast:2,pSaturation:4,pTemperature:9,pBlur:0,pVignette:8},soft:{pBrightness:5,pContrast:-5,pSaturation:-5,pTemperature:2,pBlur:0,pVignette:5}};Object.entries(sets[e.target.value]).forEach(([id,v])=>$(id).value=v);draw()};$('applyVideo').onclick=()=>{let t=$('videoTitle').value.trim(),sub=$('videoSubtitle').value.trim();if(!t)return;$('txt').value=sub?t+' '+sub:t;show('editor');draw()};
+['txt','font','shape','size','pos','spacing','opacity','color','shadow','stroke','strokeColor','uppercase','italic'].forEach(id=>$(id).addEventListener('input',()=>{if(id==='size')$('sizeOut').textContent=$('size').value;if(id==='pos')$('posOut').textContent=$('pos').value+'%';if(id==='spacing')$('spacingOut').textContent=$('spacing').value;if(id==='opacity')$('opacityOut').textContent=$('opacity').value+'%';draw()}));
+document.querySelectorAll('[data-color]').forEach(b=>b.onclick=()=>{$('color').value=b.dataset.color;draw()});
+$('photo').onchange=e=>{let f=e.target.files[0];if(!f)return;let u=URL.createObjectURL(f),im=new Image();im.onload=()=>{img=im;draw();$('status').textContent='Foto carregada. Personalize seu texto!';URL.revokeObjectURL(u)};im.src=u};
+$('reset').onclick=()=>{img=null;$('photo').value='';draw();$('status').textContent='Foto removida.'};
+$('export').onclick=()=>{draw();c.toBlob(blob=>{if(!blob)return;let u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='LT-Creator-Studio.png';a.click();setTimeout(()=>URL.revokeObjectURL(u),1500);$('status').textContent='Imagem exportada em PNG.'},'image/png')};
+$('category').onchange=phrasesRender;$('useCustom').onclick=()=>{if($('custom').value.trim()){$('txt').value=$('custom').value;show('editor');draw()}};phrasesRender();setModel(0);
 })();
-</script>
-</body>
-</html>
+</script></body></html>
